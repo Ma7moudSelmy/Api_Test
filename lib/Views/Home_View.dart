@@ -10,31 +10,30 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  bool isLoading = false;
-  late Response response;
-  void initState() {
-    assingproducts();
-    super.initState();
-  }
-
-  assingproducts() async {
-    setState(() {
-      isLoading = true;
-    });
-    response = await getAllProducts();
-    setState(() {
-      isLoading = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.green),
 
-      body: isLoading
-          ? CircularProgressIndicator()
-          : Text(response.data['total'].toString()),
+      body: Center(
+        child: FutureBuilder(
+          future: getAllProducts(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return Text(
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+
+                (snapshot.data as Response).data['total'].toString(),
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }

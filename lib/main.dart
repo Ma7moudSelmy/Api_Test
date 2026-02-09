@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:api_test/Views/Home_View.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
